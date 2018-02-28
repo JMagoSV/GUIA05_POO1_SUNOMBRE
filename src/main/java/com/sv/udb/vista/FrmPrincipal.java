@@ -19,6 +19,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form FrmPrincipal
      */
+    private int codiEqui;
     public FrmPrincipal() {
         initComponents();
         this.llenarTabla();
@@ -175,20 +176,21 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try
         {
-            EquiposCtrl obje = new EquiposCtrl();
-            if(new EquiposCtrl().guarEqui(this.txtNomb.getText(), this.txtDesc.getText()))
+            if(new EquiposCtrl().guar(this.txtNomb.getText(), this.txtDesc.getText()))
             {
-                JOptionPane.showMessageDialog(this, "Datos guardados", "POO1", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Equipo guardado correctamente", "POO1", JOptionPane.INFORMATION_MESSAGE);
                 this.llenarTabla();
+                this.txtNomb.setText("");
+                this.txtDesc.setText("");
             }
             else
             {
-                JOptionPane.showMessageDialog(this, "Oops! algo malo pasó", "POO1", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al guardar equipo, favor verifique", "POO1", JOptionPane.WARNING_MESSAGE);
             }
         }
         catch(Exception ex)
         {
-            JOptionPane.showMessageDialog(this, "Error al procesar: " + ex.getMessage(), "POO1", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al procesar", "POO1", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -197,6 +199,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         if(fila >= 0)
         {
             Equipos obje = (Equipos)this.tblEqui.getValueAt(fila, 0);
+            this.codiEqui = obje.getCodiEqui();
             //this.txtCodi.setText(String.valueOf(obje.getCodiEqui()));
             this.txtNomb.setText(obje.getNombEqui());
             this.txtDesc.setText(obje.getDescEqui());

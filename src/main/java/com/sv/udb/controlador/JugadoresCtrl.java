@@ -26,7 +26,7 @@ public class JugadoresCtrl {
         this.conn = new Conexion().getConn();
     }
     
-    public boolean guarJuga(Equipos codiEqui, String nombJuga, int edadJuga, int altuJuga, int pesoJuga)
+    public boolean guar(Equipos codiEqui, String nombJuga, int edadJuga, int altuJuga, int pesoJuga)
     {
         boolean resp = false;
         try

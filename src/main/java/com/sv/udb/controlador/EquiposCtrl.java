@@ -16,32 +16,30 @@ import java.util.List;
 
 /**
  *
- * @author Mauricio González
+ * @author JMagoSV
  */
 public class EquiposCtrl {
-//    private Equipos objeEqui;
-//    private List<Equipos> listEqui;
-    private Connection conn;
+    private final Connection conn;
     
     public EquiposCtrl()
     {
         this.conn = new Conexion().getConn();
     }
     
-    public boolean guarEqui(String nomb, String desc)
+    public boolean guar(String nombEqui, String descEqui)
     {
         boolean resp = false;
         try
         {
-            PreparedStatement cmd = this.conn.prepareStatement("INSERT INTO equipos VALUES(NULL,?,?)");
-            cmd.setString(1, nomb);
-            cmd.setString(2, nomb);
+            PreparedStatement cmd = this.conn.prepareStatement("INSERT INTO equipos VALUES(NULL, ?, ?)");
+            cmd.setString(1, nombEqui);
+            cmd.setString(2, descEqui);
             cmd.executeUpdate();
-            resp=true;
+            resp = true;
         }
-        catch (SQLException ex)
+        catch (Exception e)
         {
-            System.err.println("Error al guardar Equipos: " + ex.getMessage());
+            System.err.println("Error al guardar Equipos: " + e.getMessage());
         }
         finally
         {
@@ -55,9 +53,9 @@ public class EquiposCtrl {
                     }
                 }
             }
-            catch(SQLException ex)
+            catch(SQLException e)
             {
-                System.err.println("Error al cerrar la conexión");
+                System.err.println("Error al cerrar la conexión: " + e.getMessage());
             }
         }
         return resp;
@@ -66,10 +64,9 @@ public class EquiposCtrl {
     public List<Equipos> consTodo()
     {
        List<Equipos> resp = new ArrayList<>();
-       Connection cn = new Conexion().getConn();
         try
         {
-            PreparedStatement cmd = cn.prepareStatement("SELECT * FROM equipos");
+            PreparedStatement cmd = this.conn.prepareStatement("SELECT * FROM equipos");
             ResultSet rs = cmd.executeQuery();
             while(rs.next())
             {
