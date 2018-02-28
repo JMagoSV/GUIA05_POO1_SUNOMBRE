@@ -5,6 +5,11 @@
  */
 package com.sv.udb.vista;
 
+import com.sv.udb.controlador.EquiposCtrl;
+import com.sv.udb.modelo.Equipos;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author JMagoSV
@@ -16,6 +21,24 @@ public class FrmPrincipal extends javax.swing.JFrame {
      */
     public FrmPrincipal() {
         initComponents();
+        this.llenarTabla();
+    }
+    
+    private void llenarTabla()
+    {
+        try
+        {
+            DefaultTableModel model = (DefaultTableModel)this.tblEqui.getModel();
+            while(model.getRowCount()>0){model.removeRow(0);} //Limpiar modelo
+            for(Equipos temp : new EquiposCtrl().consTodo())
+            {
+                model.addRow(new Object[]{temp, temp.getDescEqui()});
+            }
+        }
+        catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 
     /**
@@ -45,6 +68,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jLabel12.setText("Descripción:");
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         pnlEquipos.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Equipos"));
 
@@ -59,6 +87,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 "Nombre", "Descripción"
             }
         ));
+        tblEqui.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblEquiMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblEqui);
 
         javax.swing.GroupLayout pnlEquiposLayout = new javax.swing.GroupLayout(pnlEquipos);
@@ -138,6 +171,37 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        try
+        {
+            EquiposCtrl obje = new EquiposCtrl();
+            if(new EquiposCtrl().guarEqui(this.txtNomb.getText(), this.txtDesc.getText()))
+            {
+                JOptionPane.showMessageDialog(this, "Datos guardados", "POO1", JOptionPane.INFORMATION_MESSAGE);
+                this.llenarTabla();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "Oops! algo malo pasó", "POO1", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this, "Error al procesar: " + ex.getMessage(), "POO1", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void tblEquiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEquiMouseClicked
+        int fila = this.tblEqui.getSelectedRow();
+        if(fila >= 0)
+        {
+            Equipos obje = (Equipos)this.tblEqui.getValueAt(fila, 0);
+            //this.txtCodi.setText(String.valueOf(obje.getCodiEqui()));
+            this.txtNomb.setText(obje.getNombEqui());
+            this.txtDesc.setText(obje.getDescEqui());
+        }
+    }//GEN-LAST:event_tblEquiMouseClicked
 
     /**
      * @param args the command line arguments
